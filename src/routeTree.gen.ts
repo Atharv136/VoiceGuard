@@ -18,6 +18,8 @@ import { Route as DemoRouteImport } from './routes/demo'
 import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppStatisticsRouteImport } from './routes/_app.statistics'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
 import { Route as AppHistoryRouteImport } from './routes/_app.history'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppComplaintRouteImport } from './routes/_app.complaint'
@@ -68,6 +70,16 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppStatisticsRoute = AppStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppHistoryRoute = AppHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -107,6 +119,8 @@ export interface FileRoutesByFullPath {
   '/complaint': typeof AppComplaintRoute
   '/dashboard': typeof AppDashboardRoute
   '/history': typeof AppHistoryRoute
+  '/settings': typeof AppSettingsRoute
+  '/statistics': typeof AppStatisticsRoute
   '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesByTo {
@@ -122,6 +136,8 @@ export interface FileRoutesByTo {
   '/complaint': typeof AppComplaintRoute
   '/dashboard': typeof AppDashboardRoute
   '/history': typeof AppHistoryRoute
+  '/settings': typeof AppSettingsRoute
+  '/statistics': typeof AppStatisticsRoute
   '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesById {
@@ -139,6 +155,8 @@ export interface FileRoutesById {
   '/_app/complaint': typeof AppComplaintRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/history': typeof AppHistoryRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/statistics': typeof AppStatisticsRoute
   '/_app/result/$id': typeof AppResultIdRoute
 }
 export interface FileRouteTypes {
@@ -156,6 +174,8 @@ export interface FileRouteTypes {
     | '/complaint'
     | '/dashboard'
     | '/history'
+    | '/settings'
+    | '/statistics'
     | '/result/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -171,6 +191,8 @@ export interface FileRouteTypes {
     | '/complaint'
     | '/dashboard'
     | '/history'
+    | '/settings'
+    | '/statistics'
     | '/result/$id'
   id:
     | '__root__'
@@ -187,6 +209,8 @@ export interface FileRouteTypes {
     | '/_app/complaint'
     | '/_app/dashboard'
     | '/_app/history'
+    | '/_app/settings'
+    | '/_app/statistics'
     | '/_app/result/$id'
   fileRoutesById: FileRoutesById
 }
@@ -267,6 +291,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/statistics': {
+      id: '/_app/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AppStatisticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/history': {
       id: '/_app/history'
       path: '/history'
@@ -310,6 +348,8 @@ interface AppRouteChildren {
   AppComplaintRoute: typeof AppComplaintRoute
   AppDashboardRoute: typeof AppDashboardRoute
   AppHistoryRoute: typeof AppHistoryRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppStatisticsRoute: typeof AppStatisticsRoute
   AppResultIdRoute: typeof AppResultIdRoute
 }
 
@@ -318,6 +358,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppComplaintRoute: AppComplaintRoute,
   AppDashboardRoute: AppDashboardRoute,
   AppHistoryRoute: AppHistoryRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppStatisticsRoute: AppStatisticsRoute,
   AppResultIdRoute: AppResultIdRoute,
 }
 
