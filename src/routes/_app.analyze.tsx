@@ -24,8 +24,8 @@ function Analyze() {
       toast.error("Invalid file type. Supported: MP3, WAV, M4A, OGG");
       return;
     }
-    if (f.size > 25 * 1024 * 1024) { 
-      toast.error("File is larger than 25 MB"); 
+    if (f.size > 5 * 1024 * 1024) { 
+      toast.error("File is larger than 5 MB (Aurigin API limit)"); 
       return; 
     }
     setFile(f);
@@ -67,7 +67,7 @@ function Analyze() {
               <Upload className="h-7 w-7" />
             </div>
             <p className="mt-4 font-display text-xl font-bold">Drop your recording here or click to browse</p>
-            <p className="mt-1 text-sm text-muted-foreground">MP3, WAV, M4A, OGG · up to 25 MB</p>
+            <p className="mt-1 text-sm text-muted-foreground">MP3, WAV, M4A, OGG · up to 5 MB</p>
             <input ref={inputRef} type="file" accept="audio/*" className="hidden" onChange={(e) => onFile(e.target.files?.[0] ?? null)} />
           </div>
 
