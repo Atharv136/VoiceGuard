@@ -9,9 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SafetyCheckRouteImport } from './routes/safety-check'
+import { Route as PhrasesRouteImport } from './routes/phrases'
+import { Route as PhoneCheckRouteImport } from './routes/phone-check'
+import { Route as DemoRouteImport } from './routes/demo'
 import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SafetyCheckRoute = SafetyCheckRouteImport.update({
+  id: '/safety-check',
+  path: '/safety-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhrasesRoute = PhrasesRouteImport.update({
+  id: '/phrases',
+  path: '/phrases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhoneCheckRoute = PhoneCheckRouteImport.update({
+  id: '/phone-check',
+  path: '/phone-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AwarenessRoute = AwarenessRouteImport.update({
   id: '/awareness',
   path: '/awareness',
@@ -26,31 +50,94 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/awareness'
+  fullPaths:
+    | '/'
+    | '/awareness'
+    | '/demo'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/awareness'
-  id: '__root__' | '/' | '/awareness'
+  to:
+    | '/'
+    | '/awareness'
+    | '/demo'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
+  id:
+    | '__root__'
+    | '/'
+    | '/awareness'
+    | '/demo'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AwarenessRoute: typeof AwarenessRoute
+  DemoRoute: typeof DemoRoute
+  PhoneCheckRoute: typeof PhoneCheckRoute
+  PhrasesRoute: typeof PhrasesRoute
+  SafetyCheckRoute: typeof SafetyCheckRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/safety-check': {
+      id: '/safety-check'
+      path: '/safety-check'
+      fullPath: '/safety-check'
+      preLoaderRoute: typeof SafetyCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phrases': {
+      id: '/phrases'
+      path: '/phrases'
+      fullPath: '/phrases'
+      preLoaderRoute: typeof PhrasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phone-check': {
+      id: '/phone-check'
+      path: '/phone-check'
+      fullPath: '/phone-check'
+      preLoaderRoute: typeof PhoneCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/awareness': {
       id: '/awareness'
       path: '/awareness'
@@ -71,6 +158,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AwarenessRoute: AwarenessRoute,
+  DemoRoute: DemoRoute,
+  PhoneCheckRoute: PhoneCheckRoute,
+  PhrasesRoute: PhrasesRoute,
+  SafetyCheckRoute: SafetyCheckRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
