@@ -18,8 +18,11 @@ import { Route as DemoRouteImport } from './routes/demo'
 import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppHistoryRouteImport } from './routes/_app.history'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppComplaintRouteImport } from './routes/_app.complaint'
 import { Route as AppAnalyzeRouteImport } from './routes/_app.analyze'
+import { Route as AppResultIdRouteImport } from './routes/_app.result.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -65,14 +68,29 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppComplaintRoute = AppComplaintRouteImport.update({
+  id: '/complaint',
+  path: '/complaint',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAnalyzeRoute = AppAnalyzeRouteImport.update({
   id: '/analyze',
   path: '/analyze',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResultIdRoute = AppResultIdRouteImport.update({
+  id: '/result/$id',
+  path: '/result/$id',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -86,7 +104,10 @@ export interface FileRoutesByFullPath {
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/analyze': typeof AppAnalyzeRoute
+  '/complaint': typeof AppComplaintRoute
   '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -98,7 +119,10 @@ export interface FileRoutesByTo {
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/analyze': typeof AppAnalyzeRoute
+  '/complaint': typeof AppComplaintRoute
   '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -112,7 +136,10 @@ export interface FileRoutesById {
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/_app/analyze': typeof AppAnalyzeRoute
+  '/_app/complaint': typeof AppComplaintRoute
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/history': typeof AppHistoryRoute
+  '/_app/result/$id': typeof AppResultIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -126,7 +153,10 @@ export interface FileRouteTypes {
     | '/safety-check'
     | '/signup'
     | '/analyze'
+    | '/complaint'
     | '/dashboard'
+    | '/history'
+    | '/result/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -138,7 +168,10 @@ export interface FileRouteTypes {
     | '/safety-check'
     | '/signup'
     | '/analyze'
+    | '/complaint'
     | '/dashboard'
+    | '/history'
+    | '/result/$id'
   id:
     | '__root__'
     | '/'
@@ -151,7 +184,10 @@ export interface FileRouteTypes {
     | '/safety-check'
     | '/signup'
     | '/_app/analyze'
+    | '/_app/complaint'
     | '/_app/dashboard'
+    | '/_app/history'
+    | '/_app/result/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -231,11 +267,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/history': {
+      id: '/_app/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/complaint': {
+      id: '/_app/complaint'
+      path: '/complaint'
+      fullPath: '/complaint'
+      preLoaderRoute: typeof AppComplaintRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/analyze': {
@@ -245,17 +295,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyzeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/result/$id': {
+      id: '/_app/result/$id'
+      path: '/result/$id'
+      fullPath: '/result/$id'
+      preLoaderRoute: typeof AppResultIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppAnalyzeRoute: typeof AppAnalyzeRoute
+  AppComplaintRoute: typeof AppComplaintRoute
   AppDashboardRoute: typeof AppDashboardRoute
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppResultIdRoute: typeof AppResultIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppAnalyzeRoute: AppAnalyzeRoute,
+  AppComplaintRoute: AppComplaintRoute,
   AppDashboardRoute: AppDashboardRoute,
+  AppHistoryRoute: AppHistoryRoute,
+  AppResultIdRoute: AppResultIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
