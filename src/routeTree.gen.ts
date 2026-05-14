@@ -9,38 +9,281 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SafetyCheckRouteImport } from './routes/safety-check'
+import { Route as PhrasesRouteImport } from './routes/phrases'
+import { Route as PhoneCheckRouteImport } from './routes/phone-check'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as AwarenessRouteImport } from './routes/awareness'
+import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppStatisticsRouteImport } from './routes/_app.statistics'
+import { Route as AppSettingsRouteImport } from './routes/_app.settings'
+import { Route as AppHistoryRouteImport } from './routes/_app.history'
+import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppComplaintRouteImport } from './routes/_app.complaint'
+import { Route as AppAnalyzeRouteImport } from './routes/_app.analyze'
+import { Route as AppResultIdRouteImport } from './routes/_app.result.$id'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SafetyCheckRoute = SafetyCheckRouteImport.update({
+  id: '/safety-check',
+  path: '/safety-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhrasesRoute = PhrasesRouteImport.update({
+  id: '/phrases',
+  path: '/phrases',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PhoneCheckRoute = PhoneCheckRouteImport.update({
+  id: '/phone-check',
+  path: '/phone-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AwarenessRoute = AwarenessRouteImport.update({
+  id: '/awareness',
+  path: '/awareness',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppStatisticsRoute = AppStatisticsRouteImport.update({
+  id: '/statistics',
+  path: '/statistics',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppHistoryRoute = AppHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDashboardRoute = AppDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppComplaintRoute = AppComplaintRouteImport.update({
+  id: '/complaint',
+  path: '/complaint',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAnalyzeRoute = AppAnalyzeRouteImport.update({
+  id: '/analyze',
+  path: '/analyze',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppResultIdRoute = AppResultIdRouteImport.update({
+  id: '/result/$id',
+  path: '/result/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
+  '/analyze': typeof AppAnalyzeRoute
+  '/complaint': typeof AppComplaintRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/settings': typeof AppSettingsRoute
+  '/statistics': typeof AppStatisticsRoute
+  '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
+  '/analyze': typeof AppAnalyzeRoute
+  '/complaint': typeof AppComplaintRoute
+  '/dashboard': typeof AppDashboardRoute
+  '/history': typeof AppHistoryRoute
+  '/settings': typeof AppSettingsRoute
+  '/statistics': typeof AppStatisticsRoute
+  '/result/$id': typeof AppResultIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_app': typeof AppRouteWithChildren
+  '/awareness': typeof AwarenessRoute
+  '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
+  '/phone-check': typeof PhoneCheckRoute
+  '/phrases': typeof PhrasesRoute
+  '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
+  '/_app/analyze': typeof AppAnalyzeRoute
+  '/_app/complaint': typeof AppComplaintRoute
+  '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/history': typeof AppHistoryRoute
+  '/_app/settings': typeof AppSettingsRoute
+  '/_app/statistics': typeof AppStatisticsRoute
+  '/_app/result/$id': typeof AppResultIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/awareness'
+    | '/demo'
+    | '/login'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
+    | '/signup'
+    | '/analyze'
+    | '/complaint'
+    | '/dashboard'
+    | '/history'
+    | '/settings'
+    | '/statistics'
+    | '/result/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/awareness'
+    | '/demo'
+    | '/login'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
+    | '/signup'
+    | '/analyze'
+    | '/complaint'
+    | '/dashboard'
+    | '/history'
+    | '/settings'
+    | '/statistics'
+    | '/result/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_app'
+    | '/awareness'
+    | '/demo'
+    | '/login'
+    | '/phone-check'
+    | '/phrases'
+    | '/safety-check'
+    | '/signup'
+    | '/_app/analyze'
+    | '/_app/complaint'
+    | '/_app/dashboard'
+    | '/_app/history'
+    | '/_app/settings'
+    | '/_app/statistics'
+    | '/_app/result/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  AwarenessRoute: typeof AwarenessRoute
+  DemoRoute: typeof DemoRoute
+  LoginRoute: typeof LoginRoute
+  PhoneCheckRoute: typeof PhoneCheckRoute
+  PhrasesRoute: typeof PhrasesRoute
+  SafetyCheckRoute: typeof SafetyCheckRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/safety-check': {
+      id: '/safety-check'
+      path: '/safety-check'
+      fullPath: '/safety-check'
+      preLoaderRoute: typeof SafetyCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phrases': {
+      id: '/phrases'
+      path: '/phrases'
+      fullPath: '/phrases'
+      preLoaderRoute: typeof PhrasesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/phone-check': {
+      id: '/phone-check'
+      path: '/phone-check'
+      fullPath: '/phone-check'
+      preLoaderRoute: typeof PhoneCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/awareness': {
+      id: '/awareness'
+      path: '/awareness'
+      fullPath: '/awareness'
+      preLoaderRoute: typeof AwarenessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,11 +291,90 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_app/statistics': {
+      id: '/_app/statistics'
+      path: '/statistics'
+      fullPath: '/statistics'
+      preLoaderRoute: typeof AppStatisticsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/settings': {
+      id: '/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/history': {
+      id: '/_app/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof AppHistoryRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/dashboard': {
+      id: '/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AppDashboardRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/complaint': {
+      id: '/_app/complaint'
+      path: '/complaint'
+      fullPath: '/complaint'
+      preLoaderRoute: typeof AppComplaintRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/analyze': {
+      id: '/_app/analyze'
+      path: '/analyze'
+      fullPath: '/analyze'
+      preLoaderRoute: typeof AppAnalyzeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/result/$id': {
+      id: '/_app/result/$id'
+      path: '/result/$id'
+      fullPath: '/result/$id'
+      preLoaderRoute: typeof AppResultIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppAnalyzeRoute: typeof AppAnalyzeRoute
+  AppComplaintRoute: typeof AppComplaintRoute
+  AppDashboardRoute: typeof AppDashboardRoute
+  AppHistoryRoute: typeof AppHistoryRoute
+  AppSettingsRoute: typeof AppSettingsRoute
+  AppStatisticsRoute: typeof AppStatisticsRoute
+  AppResultIdRoute: typeof AppResultIdRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAnalyzeRoute: AppAnalyzeRoute,
+  AppComplaintRoute: AppComplaintRoute,
+  AppDashboardRoute: AppDashboardRoute,
+  AppHistoryRoute: AppHistoryRoute,
+  AppSettingsRoute: AppSettingsRoute,
+  AppStatisticsRoute: AppStatisticsRoute,
+  AppResultIdRoute: AppResultIdRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  AwarenessRoute: AwarenessRoute,
+  DemoRoute: DemoRoute,
+  LoginRoute: LoginRoute,
+  PhoneCheckRoute: PhoneCheckRoute,
+  PhrasesRoute: PhrasesRoute,
+  SafetyCheckRoute: SafetyCheckRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
