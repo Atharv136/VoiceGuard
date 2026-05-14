@@ -14,7 +14,7 @@ export function Header() {
           <Link to="/phrases" className="text-sm font-medium text-muted-foreground hover:text-foreground">Phrase library</Link>
           <Link to="/phone-check" className="text-sm font-medium text-muted-foreground hover:text-foreground">Phone check</Link>
           <Link to="/safety-check" className="text-sm font-medium text-muted-foreground hover:text-foreground">Safety check</Link>
-          <Link to="/demo" className="text-sm font-medium text-muted-foreground hover:text-foreground">Live demo</Link>
+          <Link to="/live" className="text-sm font-medium text-muted-foreground hover:text-foreground">Live demo</Link>
         </nav>
         <div className="flex items-center gap-2">
           <button

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Header } from "@/components/voiceguard/Header";
 import { Footer } from "@/components/voiceguard/Footer";
-import { phoneCheckService } from "@/services/phoneCheckService";
+import { phoneService } from "@/services/phoneService";
 import { reportedNumbers } from "@/data/mock";
 import { CheckCircle2, AlertTriangle, PhoneCall } from "lucide-react";
 
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/phone-check")({
   component: PhoneCheck,
 });
 
-type Result = Awaited<ReturnType<typeof phoneCheckService.check>>;
+type Result = Awaited<ReturnType<typeof phoneService.check>>;
 
 function PhoneCheck() {
   const [num, setNum] = useState("");
@@ -27,7 +27,7 @@ function PhoneCheck() {
     e.preventDefault();
     if (!num.trim()) return;
     setLoading(true);
-    const r = await phoneCheckService.check(num);
+    const r = await phoneService.check(num);
     setResult(r);
     setLoading(false);
   }
@@ -70,9 +70,9 @@ function PhoneCheck() {
                 <p className={`font-display text-2xl font-bold ${result.reported ? "text-danger" : "text-safe"}`}>
                   {result.reported ? "This number appears in our scam database" : "No reports found for this number"}
                 </p>
-                {result.reported && result.details && (
+                {result.reported && (
                   <p className="mt-1 text-sm">
-                    Reported as <span className="font-semibold">{result.details.scam}</span> · {result.details.reports} reports · last reported {result.details.last}.
+                    Reported as <span className="font-semibold">{result.scamType || "Scam"}</span> · {result.reportCount || 0} reports · last reported {result.lastReported || "recently"}.
                   </p>
                 )}
                 <div className="mt-3 grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
