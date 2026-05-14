@@ -19,6 +19,7 @@ import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
+import { Route as AppAnalyzeRouteImport } from './routes/_app.analyze'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -69,6 +70,11 @@ const AppDashboardRoute = AppDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalyzeRoute = AppAnalyzeRouteImport.update({
+  id: '/analyze',
+  path: '/analyze',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -79,6 +85,7 @@ export interface FileRoutesByFullPath {
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
+  '/analyze': typeof AppAnalyzeRoute
   '/dashboard': typeof AppDashboardRoute
 }
 export interface FileRoutesByTo {
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
+  '/analyze': typeof AppAnalyzeRoute
   '/dashboard': typeof AppDashboardRoute
 }
 export interface FileRoutesById {
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
+  '/_app/analyze': typeof AppAnalyzeRoute
   '/_app/dashboard': typeof AppDashboardRoute
 }
 export interface FileRouteTypes {
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/phrases'
     | '/safety-check'
     | '/signup'
+    | '/analyze'
     | '/dashboard'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/phrases'
     | '/safety-check'
     | '/signup'
+    | '/analyze'
     | '/dashboard'
   id:
     | '__root__'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/phrases'
     | '/safety-check'
     | '/signup'
+    | '/_app/analyze'
     | '/_app/dashboard'
   fileRoutesById: FileRoutesById
 }
@@ -226,14 +238,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDashboardRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/analyze': {
+      id: '/_app/analyze'
+      path: '/analyze'
+      fullPath: '/analyze'
+      preLoaderRoute: typeof AppAnalyzeRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
+  AppAnalyzeRoute: typeof AppAnalyzeRoute
   AppDashboardRoute: typeof AppDashboardRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAnalyzeRoute: AppAnalyzeRoute,
   AppDashboardRoute: AppDashboardRoute,
 }
 
