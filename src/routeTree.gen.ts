@@ -9,13 +9,20 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SafetyCheckRouteImport } from './routes/safety-check'
 import { Route as PhrasesRouteImport } from './routes/phrases'
 import { Route as PhoneCheckRouteImport } from './routes/phone-check'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DemoRouteImport } from './routes/demo'
 import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as IndexRouteImport } from './routes/index'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SafetyCheckRoute = SafetyCheckRouteImport.update({
   id: '/safety-check',
   path: '/safety-check',
@@ -29,6 +36,11 @@ const PhrasesRoute = PhrasesRouteImport.update({
 const PhoneCheckRoute = PhoneCheckRouteImport.update({
   id: '/phone-check',
   path: '/phone-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoRoute = DemoRouteImport.update({
@@ -51,26 +63,32 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
   '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
   '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
   '/demo': typeof DemoRoute
+  '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
   '/safety-check': typeof SafetyCheckRoute
+  '/signup': typeof SignupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -78,38 +96,53 @@ export interface FileRouteTypes {
     | '/'
     | '/awareness'
     | '/demo'
+    | '/login'
     | '/phone-check'
     | '/phrases'
     | '/safety-check'
+    | '/signup'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/awareness'
     | '/demo'
+    | '/login'
     | '/phone-check'
     | '/phrases'
     | '/safety-check'
+    | '/signup'
   id:
     | '__root__'
     | '/'
     | '/awareness'
     | '/demo'
+    | '/login'
     | '/phone-check'
     | '/phrases'
     | '/safety-check'
+    | '/signup'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AwarenessRoute: typeof AwarenessRoute
   DemoRoute: typeof DemoRoute
+  LoginRoute: typeof LoginRoute
   PhoneCheckRoute: typeof PhoneCheckRoute
   PhrasesRoute: typeof PhrasesRoute
   SafetyCheckRoute: typeof SafetyCheckRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/safety-check': {
       id: '/safety-check'
       path: '/safety-check'
@@ -129,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/phone-check'
       fullPath: '/phone-check'
       preLoaderRoute: typeof PhoneCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo': {
@@ -159,9 +199,11 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AwarenessRoute: AwarenessRoute,
   DemoRoute: DemoRoute,
+  LoginRoute: LoginRoute,
   PhoneCheckRoute: PhoneCheckRoute,
   PhrasesRoute: PhrasesRoute,
   SafetyCheckRoute: SafetyCheckRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
