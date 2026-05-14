@@ -14,7 +14,7 @@ import { Route as SafetyCheckRouteImport } from './routes/safety-check'
 import { Route as PhrasesRouteImport } from './routes/phrases'
 import { Route as PhoneCheckRouteImport } from './routes/phone-check'
 import { Route as LoginRouteImport } from './routes/login'
-import { Route as DemoRouteImport } from './routes/demo'
+import { Route as LiveRouteImport } from './routes/live'
 import { Route as AwarenessRouteImport } from './routes/awareness'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
@@ -51,9 +51,9 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoRoute = DemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
+const LiveRoute = LiveRouteImport.update({
+  id: '/live',
+  path: '/live',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AwarenessRoute = AwarenessRouteImport.update({
@@ -109,7 +109,7 @@ const AppResultIdRoute = AppResultIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
-  '/demo': typeof DemoRoute
+  '/live': typeof LiveRoute
   '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
@@ -126,7 +126,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/awareness': typeof AwarenessRoute
-  '/demo': typeof DemoRoute
+  '/live': typeof LiveRoute
   '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
@@ -145,7 +145,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_app': typeof AppRouteWithChildren
   '/awareness': typeof AwarenessRoute
-  '/demo': typeof DemoRoute
+  '/live': typeof LiveRoute
   '/login': typeof LoginRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
@@ -164,7 +164,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/awareness'
-    | '/demo'
+    | '/live'
     | '/login'
     | '/phone-check'
     | '/phrases'
@@ -181,7 +181,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/awareness'
-    | '/demo'
+    | '/live'
     | '/login'
     | '/phone-check'
     | '/phrases'
@@ -199,7 +199,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_app'
     | '/awareness'
-    | '/demo'
+    | '/live'
     | '/login'
     | '/phone-check'
     | '/phrases'
@@ -218,7 +218,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRouteWithChildren
   AwarenessRoute: typeof AwarenessRoute
-  DemoRoute: typeof DemoRoute
+  LiveRoute: typeof LiveRoute
   LoginRoute: typeof LoginRoute
   PhoneCheckRoute: typeof PhoneCheckRoute
   PhrasesRoute: typeof PhrasesRoute
@@ -263,11 +263,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo': {
-      id: '/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof DemoRouteImport
+    '/live': {
+      id: '/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof LiveRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/awareness': {
@@ -369,7 +369,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRouteWithChildren,
   AwarenessRoute: AwarenessRoute,
-  DemoRoute: DemoRoute,
+  LiveRoute: LiveRoute,
   LoginRoute: LoginRoute,
   PhoneCheckRoute: PhoneCheckRoute,
   PhrasesRoute: PhrasesRoute,

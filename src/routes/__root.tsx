@@ -8,7 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { Toaster } from "sonner";
-import { HelplineWidget } from "@/components/voiceguard/HelplineWidget";
+
 
 import appCss from "../styles.css?url";
 
@@ -104,7 +104,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <HelplineWidget />
+
       <Toaster position="top-right" richColors closeButton />
     </QueryClientProvider>
   );

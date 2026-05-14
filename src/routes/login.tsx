@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Logo } from "@/components/voiceguard/Logo";
 import { useAuth } from "@/store/auth";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
   head: () => ({ meta: [{ title: "Log in — VoiceGuard" }] }),
@@ -14,13 +16,44 @@ function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (loading) return;
     if (!email || !pw) { toast.error("Email and password required"); return; }
-    login({ name: email.split("@")[0].replace(/[^a-z]/gi, " ") || "Member", email, age: 32 });
-    toast.success("Welcome back");
-    navigate({ to: "/dashboard" });
+    setError("");
+    setLoading(true);
+
+    try {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password: pw,
+      });
+
+      if (authError) throw authError;
+      if (!data.user) throw new Error("Login failed");
+
+      // Fetch profile to get name and age (mock age for now as we didn't store it in profile)
+      const { data: profile } = await supabase.from("profiles").select("*").eq("id", data.user.id).single();
+
+      login({ 
+        id: data.user.id,
+        name: profile?.full_name || email.split("@")[0], 
+        email, 
+        age: 30, // Default for now
+        emergencyContact: profile?.emergency_contact_email || undefined
+      });
+      
+      toast.success("Welcome back!");
+      navigate({ to: "/dashboard" });
+    } catch (err) {
+      setError((err as Error).message || "Invalid credentials");
+      toast.error((err as Error).message || "Invalid credentials");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -40,7 +73,10 @@ function Login() {
             <div className="flex items-center justify-between text-sm">
               <Link to="/" className="text-primary hover:underline">Forgot password?</Link>
             </div>
-            <button className="tap-target w-full rounded-md bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90">Log in</button>
+            <button disabled={loading} className="tap-target mt-2 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-70">
+              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+              Log in
+            </button>
           </form>
           <p className="mt-5 text-center text-sm text-muted-foreground">
             New to VoiceGuard? <Link to="/signup" className="font-semibold text-primary hover:underline">Create an account</Link>

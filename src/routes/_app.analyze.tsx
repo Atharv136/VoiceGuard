@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { Upload, FileAudio, X } from "lucide-react";
 import { AnalysisProgress } from "@/components/voiceguard/AnalysisProgress";
 import { toast } from "sonner";
-import { seededAnalyses } from "@/data/mock";
+import { analyzeService } from "@/services/analyzeService";
 
 export const Route = createFileRoute("/_app/analyze")({
   head: () => ({ meta: [{ title: "Analyze a call — VoiceGuard" }] }),
@@ -19,13 +19,35 @@ function Analyze() {
   function pick() { inputRef.current?.click(); }
   function onFile(f: File | null) {
     if (!f) return;
-    if (f.size > 25 * 1024 * 1024) { toast.error("File is larger than 25 MB"); return; }
+    const allowed = ["audio/mpeg", "audio/wav", "audio/mp4", "audio/ogg", "audio/x-m4a"];
+    if (!allowed.includes(f.type) && !f.name.endsWith(".m4a")) {
+      toast.error("Invalid file type. Supported: MP3, WAV, M4A, OGG");
+      return;
+    }
+    if (f.size > 25 * 1024 * 1024) { 
+      toast.error("File is larger than 25 MB"); 
+      return; 
+    }
     setFile(f);
   }
 
-  function start() {
+  async function start() {
     if (!file) { toast.error("Pick a file first"); return; }
     setRunning(true);
+    
+    try {
+      // Real API call to the backend
+      const result = await analyzeService.analyze(file);
+      // Wait for the animation to look good
+      setTimeout(() => {
+        navigate({ to: "/result/$id" as any, params: { id: result.sharedReportSlug } });
+      }, 2000);
+    } catch (err) {
+      setRunning(false);
+      toast.error("Analysis failed", {
+        description: "Make sure your backend is running on port 3001."
+      });
+    }
   }
 
   return (
@@ -76,7 +98,8 @@ function Analyze() {
 
       {running && (
         <div className="mt-8">
-          <AnalysisProgress onDone={() => navigate({ to: "/result/$id", params: { id: seededAnalyses[0].id } })} />
+          <AnalysisProgress onDone={() => {}} />
+          <p className="mt-6 text-center text-sm font-medium animate-pulse">Running AI deepfake detection & transcription...</p>
         </div>
       )}
     </div>

@@ -4,6 +4,8 @@ import { z } from "zod";
 import { Logo } from "@/components/voiceguard/Logo";
 import { useAuth } from "@/store/auth";
 import { toast } from "sonner";
+import { supabase } from "@/lib/supabase";
+import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({ meta: [{ title: "Create your account — VoiceGuard" }] }),
@@ -19,12 +21,14 @@ function Signup() {
   const [age, setAge] = useState<string>("");
   const [emergency, setEmergency] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState(false);
 
   const ageNum = Number(age);
   const emergencyRequired = !!age && (ageNum < 16 || ageNum > 40);
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (loading) return;
     const schema = z.object({
       name: z.string().trim().min(2, "Please enter your full name"),
       email: z.string().email("Enter a valid email"),
@@ -42,10 +46,45 @@ function Signup() {
       return;
     }
     setErrors({});
-    login({ name, email, age: ageNum, emergencyContact: emergency || undefined });
-    setOnboardingDone(false);
-    toast.success("Account created. Welcome to VoiceGuard.");
-    navigate({ to: "/dashboard" });
+    setLoading(true);
+
+    try {
+      // 1. Create user in Supabase Auth
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password: pw,
+        options: {
+          data: {
+            full_name: name,
+          }
+        }
+      });
+
+      if (error) throw error;
+      if (!data.user) throw new Error("Signup failed");
+
+      // 2. Create profile in database
+      const { error: profileError } = await supabase.from("profiles").upsert({
+        id: data.user.id,
+        full_name: name,
+        emergency_contact_email: emergency || null,
+      });
+
+      if (profileError) {
+        console.error("Profile creation error:", profileError);
+        // We continue anyway, as the auth user was created
+      }
+
+      // 3. Update local state
+      login({ id: data.user.id, name, email, age: ageNum, emergencyContact: emergency || undefined });
+      setOnboardingDone(false);
+      toast.success("Account created. Welcome to VoiceGuard.");
+      navigate({ to: "/dashboard" });
+    } catch (err) {
+      toast.error((err as Error).message || "Failed to create account");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -90,7 +129,8 @@ function Signup() {
                 placeholder="family@example.com"
               />
             </Field>
-            <button className="tap-target w-full rounded-md bg-primary text-base font-semibold text-primary-foreground hover:bg-primary/90">
+            <button disabled={loading} className="tap-target flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-70">
+              {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               Create account
             </button>
           </form>

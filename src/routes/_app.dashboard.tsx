@@ -1,8 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Upload, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Upload, ShieldCheck, AlertTriangle, Loader2 } from "lucide-react";
 import { useAuth } from "@/store/auth";
-import { seededAnalyses, stats } from "@/data/mock";
 import { RiskBadge } from "@/components/voiceguard/RiskBadge";
+import { HelplineWidget } from "@/components/voiceguard/HelplineWidget";
+import { useEffect, useState } from "react";
+import { historyService, type AnalysisRecord } from "@/services/historyService";
+import { statisticsService, type StatisticsData } from "@/services/statisticsService";
 
 export const Route = createFileRoute("/_app/dashboard")({
   head: () => ({ meta: [{ title: "Dashboard — VoiceGuard" }] }),
@@ -11,8 +14,30 @@ export const Route = createFileRoute("/_app/dashboard")({
 
 function Dashboard() {
   const { user } = useAuth();
+  const [history, setHistory] = useState<AnalysisRecord[]>([]);
+  const [stats, setStats] = useState<StatisticsData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const [h, s] = await Promise.all([
+          historyService.getLatest(),
+          statisticsService.get()
+        ]);
+        setHistory(h.slice(0, 5));
+        setStats(s);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadData();
+  }, []);
+
   const hasContact = !!user?.emergencyContact;
+
   return (
+    <>
     <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-6">
         <div>
@@ -36,35 +61,50 @@ function Dashboard() {
             <Link to="/history" className="text-sm font-semibold text-primary hover:underline">View all</Link>
           </div>
           <div className="mt-3 overflow-hidden rounded-[14px] border bg-card">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/60 text-left text-xs uppercase tracking-wider text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Risk</th>
-                  <th className="px-4 py-3">Keywords</th>
-                  <th className="px-4 py-3">Transcript preview</th>
-                </tr>
-              </thead>
-              <tbody>
-                {seededAnalyses.map((r) => (
-                  <tr key={r.id} className="border-t hover:bg-muted/30">
-                    <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">{r.date}</td>
-                    <td className="px-4 py-3"><RiskBadge risk={r.risk} /></td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-1">
-                        {r.keywords.slice(0, 2).map((k) => (
-                          <span key={k} className="rounded-full bg-danger/10 px-2 py-0.5 text-xs font-semibold text-danger">{k}</span>
-                        ))}
-                        {r.keywords.length === 0 && <span className="text-xs text-muted-foreground">None</span>}
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <Link to="/result/$id" params={{ id: r.id }} className="line-clamp-1 max-w-[280px] text-foreground hover:underline">{r.preview}</Link>
-                    </td>
+            {loading ? (
+              <div className="flex h-32 items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
+            ) : (
+              <table className="w-full text-sm">
+                <thead className="bg-muted/60 text-left text-xs uppercase tracking-wider text-muted-foreground">
+                  <tr>
+                    <th className="px-4 py-3">Date</th>
+                    <th className="px-4 py-3">Risk</th>
+                    <th className="px-4 py-3">Keywords</th>
+                    <th className="px-4 py-3">Transcript preview</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {history.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="px-4 py-10 text-center text-muted-foreground">No analyses yet. Your recent reports will appear here.</td>
+                    </tr>
+                  )}
+                  {history.map((r) => (
+                    <tr key={r.id} className="border-t hover:bg-muted/30">
+                      <td className="px-4 py-3 whitespace-nowrap text-muted-foreground">
+                        {new Date(r.created_at).toLocaleDateString("en-IN")}
+                      </td>
+                      <td className="px-4 py-3"><RiskBadge risk={r.risk_level} /></td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap gap-1">
+                          {r.detected_keywords.slice(0, 2).map((k) => (
+                            <span key={k} className="rounded-full bg-danger/10 px-2 py-0.5 text-xs font-semibold text-danger">{k}</span>
+                          ))}
+                          {r.detected_keywords.length === 0 && <span className="text-xs text-muted-foreground">None</span>}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <Link to="/result/$id" params={{ id: r.id }} className="line-clamp-1 max-w-[280px] text-foreground hover:underline">
+                          {r.transcript || "No transcript available"}
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
         </section>
       </div>
@@ -90,10 +130,14 @@ function Dashboard() {
 
         <div className="rounded-[14px] border bg-card p-5">
           <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Community impact</p>
-          <p className="mt-2 font-display text-3xl font-extrabold tabular-nums">{stats.familiesAlerted.toLocaleString("en-IN")}</p>
+          <p className="mt-2 font-display text-3xl font-extrabold tabular-nums">
+            {(stats?.familiesAlerted || 0).toLocaleString("en-IN")}
+          </p>
           <p className="text-xs text-muted-foreground">families alerted this month</p>
         </div>
       </aside>
     </div>
+    <HelplineWidget />
+    </>
   );
 }

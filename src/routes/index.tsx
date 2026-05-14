@@ -5,7 +5,6 @@ import {
 } from "lucide-react";
 import { Header } from "@/components/voiceguard/Header";
 import { Footer } from "@/components/voiceguard/Footer";
-import { stats } from "@/data/mock";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,8 +15,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Landing,
 });
-
-const fmt = (n: number) => n.toLocaleString("en-IN");
 
 const demoClips = [
   { label: "Real Human Voice", desc: "A genuine phone call between a parent and child checking in.", risk: "safe" as const },
@@ -45,8 +42,8 @@ function Landing() {
                 VoiceGuard analyzes suspicious calls for fake voices and scam language. Free. Private.
               </p>
               <div className="mt-7 flex flex-wrap gap-3">
-                <Link to="/demo" className="tap-target inline-flex items-center gap-2 rounded-[10px] bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90">
-                  Try demo now <ArrowRight className="h-4 w-4" />
+                <Link to="/live" className="tap-target inline-flex items-center gap-2 rounded-[10px] bg-primary px-6 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary/90">
+                  Try Live Guard <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link to="/signup" className="tap-target inline-flex items-center rounded-[10px] border-2 border-primary/30 bg-background px-6 text-base font-semibold text-primary hover:bg-accent">
                   Create free account
@@ -116,15 +113,15 @@ function Landing() {
           </div>
         </section>
 
-        {/* Demo mode */}
+        {/* Demo mode -> upgraded to Live Guard */}
         <section className="border-b bg-card">
           <div className="mx-auto max-w-7xl px-4 py-16 md:px-6">
             <div className="flex flex-wrap items-end justify-between gap-3">
               <div>
-                <p className="text-sm font-semibold text-primary">Demo mode</p>
-                <h2 className="mt-1 font-display text-3xl font-bold md:text-4xl">Hear how VoiceGuard analyzes a call</h2>
+                <p className="text-sm font-semibold text-primary">Live Guard</p>
+                <h2 className="mt-1 font-display text-3xl font-bold md:text-4xl">Real-time protection while you talk</h2>
               </div>
-              <Link to="/demo" className="text-sm font-semibold text-primary hover:underline">Open full demo →</Link>
+              <Link to="/live" className="text-sm font-semibold text-primary hover:underline">Open Live Guard →</Link>
             </div>
             <div className="mt-8 grid gap-4 md:grid-cols-3">
               {demoClips.map((c) => (
@@ -141,31 +138,12 @@ function Landing() {
                   <p className="mt-1 text-sm text-muted-foreground">{c.desc}</p>
                   <div className="mt-4 flex items-center gap-2">
                     <button className="tap-target inline-flex items-center gap-2 rounded-md border px-4 text-sm font-semibold hover:bg-muted">
-                      <Play className="h-4 w-4" /> Play
+                      <Play className="h-4 w-4" /> Play sample
                     </button>
-                    <Link to="/demo" className="tap-target inline-flex items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
-                      Analyze now
+                    <Link to="/live" className="tap-target inline-flex items-center rounded-md bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90">
+                      Try live now
                     </Link>
                   </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Live stats */}
-        <section className="border-b">
-          <div className="mx-auto max-w-7xl px-4 py-12 md:px-6">
-            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-              {[
-                { k: "Total calls analyzed", v: fmt(stats.totalAnalyzed) },
-                { k: "Flagged as dangerous", v: fmt(stats.dangerousFlagged) },
-                { k: "Families alerted", v: fmt(stats.familiesAlerted) },
-                { k: "Scam phrases detected", v: fmt(stats.scamPhrasesDetected) },
-              ].map((s) => (
-                <div key={s.k} className="rounded-[14px] border bg-card p-5">
-                  <p className="font-display text-3xl font-extrabold tabular-nums md:text-4xl">{s.v}</p>
-                  <p className="mt-1 text-xs font-medium text-muted-foreground">{s.k}</p>
                 </div>
               ))}
             </div>

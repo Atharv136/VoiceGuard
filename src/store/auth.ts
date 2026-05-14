@@ -1,7 +1,9 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { supabase } from "@/lib/supabase";
 
 export type User = {
+  id?: string;
   name: string;
   email: string;
   age: number;
@@ -13,7 +15,7 @@ type AuthState = {
   onboardingDone: boolean;
   theme: "light" | "dark";
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   setOnboardingDone: (v: boolean) => void;
   setTheme: (t: "light" | "dark") => void;
   updateUser: (patch: Partial<User>) => void;
@@ -26,7 +28,10 @@ export const useAuth = create<AuthState>()(
       onboardingDone: false,
       theme: "light",
       login: (user) => set({ user }),
-      logout: () => set({ user: null, onboardingDone: false }),
+      logout: async () => {
+        await supabase.auth.signOut();
+        set({ user: null, onboardingDone: false });
+      },
       setOnboardingDone: (v) => set({ onboardingDone: v }),
       setTheme: (t) => {
         if (typeof document !== "undefined") {

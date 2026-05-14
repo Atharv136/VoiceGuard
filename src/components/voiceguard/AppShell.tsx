@@ -11,6 +11,7 @@ import {
   Settings,
   LogOut,
   ShieldCheck,
+  Zap,
 } from "lucide-react";
 import { useAuth } from "@/store/auth";
 import { OnboardingModal } from "./OnboardingModal";
@@ -23,7 +24,9 @@ const nav = [
   { to: "/safety-check", label: "Safety check", icon: ListChecks },
   { to: "/awareness", label: "Awareness feed", icon: Newspaper },
   { to: "/phone-check", label: "Phone lookup", icon: PhoneCall },
+  { to: "/live", label: "Live Guard", icon: Zap },
   { to: "/statistics", label: "Statistics", icon: BarChart3 },
+
   { to: "/settings", label: "Settings", icon: Settings },
 ] as const;
 

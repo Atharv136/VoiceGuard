@@ -1,4 +1,4 @@
-export type AwarenessCategory = "Government" | "Financial" | "Family" | "Impersonation";
+export type AwarenessCategory = "Government" | "Financial" | "Family" | "Impersonation" | "Scheme";
 
 export type AwarenessCard = {
   id: string;
@@ -7,9 +7,11 @@ export type AwarenessCard = {
   howItWorks: string;
   redFlags: string[];
   whatToDo: string;
+  isScheme?: boolean;
 };
 
 export const awarenessCards: AwarenessCard[] = [
+  // EXISTING SCAM CARDS...
   {
     id: "fake-cbi",
     title: "Fake CBI Officer Call",
@@ -159,5 +161,127 @@ export const awarenessCards: AwarenessCard[] = [
     ],
     whatToDo:
       "Real prizes never need an upfront fee. Block the number, do not reply, and report the message at sancharsaathi.gov.in.",
+  },
+
+  // NEW GOVERNMENT SCHEMES & NGO CARDS
+  {
+    id: "rbi-fraud-framework",
+    title: "RBI Small-Value Fraud Framework (2026)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "New RBI guidelines to compensate victims of small digital frauds up to ₹25,000. It covers 'no questions asked' minor frauds drawn from the DEA Fund.",
+    redFlags: [
+      "Covers 85% of the lost amount up to ₹25,000",
+      "Applies even if an OTP was accidentally shared",
+      "Must be reported within 5 days of the incident",
+    ],
+    whatToDo:
+      "Report fraud to your bank and the 1930 helpline immediately within the 5-day window to claim compensation.",
+  },
+  {
+    id: "it-act-compensation",
+    title: "IT Act Statutory Compensation (Sec 43A/46)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "Victims of data theft, hacking, or identity fraud can claim up to ₹1 crore from companies or banks whose negligence caused the breach.",
+    redFlags: [
+      "File cases through the State IT Secretary (Adjudicating Officer)",
+      "Mandates damages paid directly to the victim by the company",
+      "Applicable for corporate negligence in handling personal data",
+    ],
+    whatToDo:
+      "Consult a cyber lawyer to file an application with the Adjudicating Officer of your state IT department.",
+  },
+  {
+    id: "helpline-1930",
+    title: "Citizen Financial Cyber Fraud Reporting (1930)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "Immediate relief system that communicates with banks to freeze stolen funds before scammers can withdraw them.",
+    redFlags: [
+      "Most effective during the 'Golden Hour' (immediately after fraud)",
+      "Direct link between police and bank nodal officers",
+      "Can retrieve siphoned money if reported fast enough",
+    ],
+    whatToDo:
+      "Call 1930 IMMEDIATELY after losing money. Have your transaction ID and bank details ready.",
+  },
+  {
+    id: "ccpwc-i4c",
+    title: "Cyber Prevention Schemes (CCPWC & I4C)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "Institutional frameworks (Indian Cybercrime Coordination Centre) that coordinate national anti-fraud efforts and forensic labs.",
+    redFlags: [
+      "Apex body for coordinating all state cyber cells",
+      "Manages the national portal cybercrime.gov.in",
+      "Provides grants for specialized cyber forensic labs",
+    ],
+    whatToDo:
+      "Always file your formal complaints at cybercrime.gov.in — it is monitored by I4C at the central level.",
+  },
+  {
+    id: "swachhta-kendra",
+    title: "Cyber Swachhta Kendra (Botnet Cleaning)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "A free government utility service providing tools to scan and clean malware/botnets from public and private devices.",
+    redFlags: [
+      "Completely free government security tools",
+      "Partners with top antivirus companies for removal tools",
+      "Helps prevent your phone from being used by hackers",
+    ],
+    whatToDo:
+      "Visit cyberswachhtakendra.gov.in to download free 'M-Kavach' for mobile or other cleaning tools for your PC.",
+  },
+  {
+    id: "cyber-peace",
+    title: "CyberPeace Foundation (Technical NGO)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "Global non-profit focusing on internet safety, awareness, and helping victims with technical steps of reporting.",
+    redFlags: [
+      "Provides free technical support for victims",
+      "Focuses on policy advocacy and digital citizenship",
+      "Assists in identifying complex phishing patterns",
+    ],
+    whatToDo:
+      "Reach out to CyberPeace via their website for guidance if you are overwhelmed by technical reporting steps.",
+  },
+  {
+    id: "cyber-saathi",
+    title: "Cyber Saathi (Legal Aid for Women/Children)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "NGO helping women and children facing digital extortion, stalking, or harassment with pro-bono legal guidance.",
+    redFlags: [
+      "Specialized in harassment and extortion cases",
+      "Provides mental health support references",
+      "Expert legal guidance for IT Act sections",
+    ],
+    whatToDo:
+      "If facing digital stalking or extortion, visit cybersaathi.org for safe, expert legal paths.",
+  },
+  {
+    id: "nacia-foundation",
+    title: "NACIA Foundation (Documentation Help)",
+    category: "Scheme",
+    isScheme: true,
+    howItWorks:
+      "Provides access to lawyers who help victims format, document, and file formal cheating and fraud complaints.",
+    redFlags: [
+      "Helps organize facts for police reports",
+      "Assists in documenting evidence correctly",
+      "Pro-bono lawyers for cheating/fraud cases",
+    ],
+    whatToDo:
+      "Contact NACIA if you have evidence but don't know how to write a formal legal complaint for the police.",
   },
 ];
