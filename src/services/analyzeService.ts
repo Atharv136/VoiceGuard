@@ -1,8 +1,24 @@
 import { apiCall } from "./_base";
 
+export interface AuriginSegment {
+  start: number;
+  end: number;
+  scores: number[];
+  confidence: number;
+  result: "bonafide" | "spoofed";
+}
+
 export interface AnalysisResponse {
   riskLevel: "Safe" | "Suspicious" | "Dangerous";
   auriginScore: number;
+  auriginVerdict: string;
+  auriginConfidence: number;
+  auriginSegments: AuriginSegment[];
+  auriginModel: string;
+  audioDuration: number;
+  processingTime: number;
+  auriginWarnings: string[];
+  auriginPredictionId: string;
   keywordScore: number;
   detectedKeywords: string[];
   transcript: string;

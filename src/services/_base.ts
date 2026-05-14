@@ -1,25 +1,49 @@
-import { supabase } from "../lib/supabase";
+const API = "http://localhost:3001";
 
-const API = "http://localhost:3001"; // Pointing to our new Node.js backend
+/** Read stored JWT from Zustand persisted state in localStorage */
+function getToken(): string | null {
+  try {
+    const stored = localStorage.getItem("voiceguard-auth");
+    if (!stored) return null;
+    const parsed = JSON.parse(stored);
+    return parsed?.state?.accessToken ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export async function apiCall<T>(path: string, init?: RequestInit, fallback?: T): Promise<T> {
   try {
-    const customInit: RequestInit = { ...init, headers: { ...init?.headers } };
-    
-    // Attach Supabase token if logged in
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session?.access_token) {
-      customInit.headers = {
-        ...customInit.headers,
-        Authorization: `Bearer ${session.access_token}`,
-      };
-    }
+    const token = getToken();
 
-    const res = await fetch(`${API}${path}`, customInit);
-    if (!res.ok) throw new Error(`API ${res.status}`);
+    // Build headers — inject JWT if available, but never override Content-Type for FormData
+    const authHeader: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+    const finalInit: RequestInit = {
+      ...init,
+      headers: {
+        ...authHeader,
+        ...(init?.headers ?? {}),
+      },
+    };
+
+    const res = await fetch(`${API}${path}`, finalInit);
+    if (!res.ok) {
+      const body = await res.text();
+      let message: string;
+      try {
+        const parsed = JSON.parse(body);
+        message = parsed.message || parsed.error || `API ${res.status}`;
+      } catch {
+        message = `API ${res.status}: ${body}`;
+      }
+      throw new Error(message);
+    }
     return (await res.json()) as T;
   } catch (err) {
-    console.error(`API Error (${path}):`, err);
-    return fallback as T;
+    if (fallback !== undefined) {
+      console.warn(`API fallback used for ${path}:`, (err as Error).message);
+      return fallback;
+    }
+    throw err;
   }
 }

@@ -4,7 +4,6 @@ import { z } from "zod";
 import { Logo } from "@/components/voiceguard/Logo";
 import { useAuth } from "@/store/auth";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/signup")({
@@ -49,34 +48,24 @@ function Signup() {
     setLoading(true);
 
     try {
-      // 1. Create user in Supabase Auth
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password: pw,
-        options: {
-          data: {
-            full_name: name,
-          }
-        }
+      // Call our backend instead of Supabase directly — no rate limits!
+      const res = await fetch("http://localhost:3001/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password: pw,
+          name,
+          age: ageNum,
+          emergencyContact: emergency || undefined,
+        }),
       });
 
-      if (error) throw error;
-      if (!data.user) throw new Error("Signup failed");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      // 2. Create profile in database
-      const { error: profileError } = await supabase.from("profiles").upsert({
-        id: data.user.id,
-        full_name: name,
-        emergency_contact_email: emergency || null,
-      });
-
-      if (profileError) {
-        console.error("Profile creation error:", profileError);
-        // We continue anyway, as the auth user was created
-      }
-
-      // 3. Update local state
-      login({ id: data.user.id, name, email, age: ageNum, emergencyContact: emergency || undefined });
+      // Store user + JWT in the auth store
+      login(data.user, data.accessToken);
       setOnboardingDone(false);
       toast.success("Account created. Welcome to VoiceGuard.");
       navigate({ to: "/dashboard" });

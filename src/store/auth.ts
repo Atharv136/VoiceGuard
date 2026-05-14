@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { supabase } from "@/lib/supabase";
 
 export type User = {
   id?: string;
@@ -12,9 +11,10 @@ export type User = {
 
 type AuthState = {
   user: User | null;
+  accessToken: string | null;
   onboardingDone: boolean;
   theme: "light" | "dark";
-  login: (user: User) => void;
+  login: (user: User, token: string) => void;
   logout: () => Promise<void>;
   setOnboardingDone: (v: boolean) => void;
   setTheme: (t: "light" | "dark") => void;
@@ -25,12 +25,12 @@ export const useAuth = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      accessToken: null,
       onboardingDone: false,
       theme: "light",
-      login: (user) => set({ user }),
+      login: (user, token) => set({ user, accessToken: token }),
       logout: async () => {
-        await supabase.auth.signOut();
-        set({ user: null, onboardingDone: false });
+        set({ user: null, accessToken: null, onboardingDone: false });
       },
       setOnboardingDone: (v) => set({ onboardingDone: v }),
       setTheme: (t) => {

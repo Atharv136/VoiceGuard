@@ -5,6 +5,8 @@ export interface AnalysisRecord {
   created_at: string;
   risk_level: "Safe" | "Suspicious" | "Dangerous";
   aurigin_score: number;
+  aurigin_verdict?: string;
+  aurigin_segments?: any[];
   keyword_score: number;
   detected_keywords: string[];
   transcript: string;

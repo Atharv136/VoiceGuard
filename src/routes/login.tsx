@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Logo } from "@/components/voiceguard/Logo";
 import { useAuth } from "@/store/auth";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/login")({
@@ -16,41 +15,31 @@ function Login() {
   const { login } = useAuth();
   const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (loading) return;
     if (!email || !pw) { toast.error("Email and password required"); return; }
-    setError("");
     setLoading(true);
 
     try {
-      const { data, error: authError } = await supabase.auth.signInWithPassword({
-        email,
-        password: pw,
+      // Call backend — backend validates with Supabase and returns JWT
+      const res = await fetch("http://localhost:3001/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: pw }),
       });
 
-      if (authError) throw authError;
-      if (!data.user) throw new Error("Login failed");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Login failed");
 
-      // Fetch profile to get name and age (mock age for now as we didn't store it in profile)
-      const { data: profile } = await supabase.from("profiles").select("*").eq("id", data.user.id).single();
-
-      login({ 
-        id: data.user.id,
-        name: profile?.full_name || email.split("@")[0], 
-        email, 
-        age: 30, // Default for now
-        emergencyContact: profile?.emergency_contact_email || undefined
-      });
-      
+      // Store user + JWT
+      login(data.user, data.accessToken);
       toast.success("Welcome back!");
       navigate({ to: "/dashboard" });
     } catch (err) {
-      setError((err as Error).message || "Invalid credentials");
-      toast.error((err as Error).message || "Invalid credentials");
+      toast.error((err as Error).message || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -70,9 +59,6 @@ function Login() {
             <Field label="Password">
               <input type="password" required value={pw} onChange={(e) => setPw(e.target.value)} className="input" />
             </Field>
-            <div className="flex items-center justify-between text-sm">
-              <Link to="/" className="text-primary hover:underline">Forgot password?</Link>
-            </div>
             <button disabled={loading} className="tap-target mt-2 flex w-full items-center justify-center gap-2 rounded-md bg-primary py-3 text-base font-semibold text-primary-foreground hover:bg-primary/90 disabled:opacity-70">
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               Log in

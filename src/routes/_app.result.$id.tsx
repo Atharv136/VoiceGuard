@@ -95,6 +95,24 @@ function Result() {
 
       <section className="rounded-[14px] border bg-card p-5 shadow-sm">
         <h2 className="font-display text-lg font-bold">Full transcript</h2>
+        
+        {record.aurigin_segments && record.aurigin_segments.length > 0 && (
+          <div className="mt-4 mb-4 rounded-md border border-primary/20 bg-primary/5 p-4 text-sm font-mono text-muted-foreground">
+            <div className="font-semibold text-primary mb-2 border-b border-primary/10 pb-2">
+              [Aurigin AI analysis — {record.aurigin_verdict || "unknown"}]
+            </div>
+            {record.aurigin_segments.map((seg, i) => (
+              <div key={i} className="mb-1">
+                <span className="text-foreground/70">[{seg.start.toFixed(1)}s - {seg.end.toFixed(1)}s]</span>{" "}
+                <span className={seg.result === "spoofed" ? "text-danger font-semibold" : seg.result === "partially_spoofed" ? "text-warning font-semibold" : "text-safe font-semibold"}>
+                  {seg.result}
+                </span>{" "}
+                (confidence: {seg.confidence}%)
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="mt-3 text-base leading-relaxed text-foreground/90 whitespace-pre-wrap">
           {highlight(record.transcript, record.detected_keywords)}
         </div>
