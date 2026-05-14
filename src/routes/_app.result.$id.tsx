@@ -74,7 +74,7 @@ function Result() {
           <ScoreBar 
             label="Voice authenticity (Aurigin)" 
             value={record.aurigin_score} 
-            helper="How likely the voice is synthetic/AI-cloned (Higher = Higher Risk)." 
+            helper="How likely the voice is genuine/human (Higher = Lower Risk)" 
             tone={record.aurigin_score >= 70 ? "danger" : record.aurigin_score >= 40 ? "primary" : "safe"} 
           />
           <ScoreBar 

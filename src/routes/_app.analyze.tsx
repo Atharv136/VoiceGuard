@@ -66,19 +66,19 @@ function Analyze() {
   }
 
   const riskColor = (level: string) =>
-    level === "Dangerous" ? "text-danger border-danger/30 bg-danger/10" :
-    level === "Suspicious" ? "text-warning-foreground border-warning/30 bg-warning/10" :
-    "text-safe border-safe/30 bg-safe/10";
+    level === "Dangerous" ? "text-safe border-safe/30 bg-safe/10" :
+      level === "Suspicious" ? "text-warning-foreground border-warning/30 bg-warning/10" :
+        "text-danger border-danger/30 bg-danger/10";
 
   const riskIcon = (level: string) =>
-    level === "Dangerous" ? <AlertOctagon className="h-6 w-6" /> :
-    level === "Suspicious" ? <AlertTriangle className="h-6 w-6" /> :
-    <CheckCircle className="h-6 w-6" />;
+    level === "Dangerous" ? <CheckCircle className="h-6 w-6" /> :
+      level === "Suspicious" ? <AlertOctagon className="h-6 w-6" /> :
+        <AlertTriangle className="h-6 w-6" />;
 
   const riskLabel = (level: string) =>
-    level === "Dangerous" ? "HIGH RISK — This call is likely a scam" :
-    level === "Suspicious" ? "SUSPICIOUS — Some warning signs detected" :
-    "SAFE — No scam indicators found";
+    level === "Dangerous" ? "SAFE — No scam indicators found" :
+      level === "Suspicious" ? "SUSPICIOUS — Some warning signs detected" :
+        "HIGH RISK — This call is likely a scam";
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -128,7 +128,7 @@ function Analyze() {
 
       {running && (
         <div className="mt-8">
-          <AnalysisProgress onDone={() => {}} />
+          <AnalysisProgress onDone={() => { }} />
           <p className="mt-6 text-center text-sm font-medium animate-pulse">Running AI deepfake detection & transcription...</p>
         </div>
       )}
@@ -149,7 +149,7 @@ function Analyze() {
             <ScoreBar
               label="Voice authenticity (Aurigin)"
               value={result.auriginScore}
-              helper="How likely the voice is synthetic/AI-cloned (Higher = Higher Risk)."
+              helper="How likely the voice is genuine/human (Higher = Lower Risk)"
               tone={result.auriginScore >= 70 ? "danger" : result.auriginScore >= 40 ? "primary" : "safe"}
             />
             <ScoreBar
@@ -164,14 +164,13 @@ function Analyze() {
           <section className="rounded-[14px] border bg-card p-5 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">Aurigin AI Deepfake Detection</h2>
-              <span className={`rounded-full px-3 py-1 text-xs font-bold ${
-                result.auriginVerdict === "bonafide" ? "bg-safe/20 text-safe" :
-                result.auriginVerdict === "spoofed" ? "bg-danger/20 text-danger" :
-                "bg-warning/20 text-warning-foreground"
-              }`}>
+              <span className={`rounded-full px-3 py-1 text-xs font-bold ${result.auriginVerdict === "bonafide" ? "bg-safe/20 text-safe" :
+                  result.auriginVerdict === "spoofed" ? "bg-danger/20 text-danger" :
+                    "bg-warning/20 text-warning-foreground"
+                }`}>
                 {result.auriginVerdict === "bonafide" ? "BONAFIDE" :
-                 result.auriginVerdict === "spoofed" ? "SPOOFED" :
-                 "PARTIALLY SPOOFED"}
+                  result.auriginVerdict === "spoofed" ? "SPOOFED" :
+                    "PARTIALLY SPOOFED"}
               </span>
             </div>
 
@@ -213,9 +212,8 @@ function Analyze() {
                           <td className="py-2 pr-3 font-mono text-xs">{i}</td>
                           <td className="py-2 pr-3 font-mono text-xs">{seg.start.toFixed(1)}s – {seg.end.toFixed(1)}s</td>
                           <td className="py-2 pr-3">
-                            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
-                              seg.result === "bonafide" ? "bg-safe/15 text-safe" : "bg-danger/15 text-danger"
-                            }`}>
+                            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${seg.result === "bonafide" ? "bg-safe/15 text-safe" : "bg-danger/15 text-danger"
+                              }`}>
                               {seg.result}
                             </span>
                           </td>

@@ -10,7 +10,7 @@ export function ScoreBar({
   tone?: "primary" | "danger" | "safe";
 }) {
   const color =
-    tone === "danger" ? "bg-danger" : tone === "safe" ? "bg-safe" : "bg-primary";
+    tone === "danger" ? "bg-safe" : tone === "safe" ? "bg-danger" : "bg-primary";
   return (
     <div className="rounded-[12px] border bg-card p-5">
       <div className="flex items-baseline justify-between gap-3">
