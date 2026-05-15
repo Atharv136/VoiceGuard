@@ -59,8 +59,13 @@ function PricingPage() {
             </div>
             <h3 className="mt-4 font-display text-2xl font-bold">Premium Guard</h3>
             <p className="mt-2 text-muted-foreground text-sm">Total peace of mind with real-time family alerts.</p>
-            <div className="mt-6 font-display text-4xl font-black">
-              ₹199 <span className="text-lg font-medium text-muted-foreground">/ month</span>
+            <div className="mt-6 flex flex-col gap-1">
+              <div className="font-display text-4xl font-black">
+                ₹99 <span className="text-lg font-medium text-muted-foreground">/ month</span>
+              </div>
+              <div className="text-sm font-semibold text-primary">
+                or ₹899 / year <span className="text-muted-foreground font-normal bg-primary/10 px-2 py-0.5 rounded-full ml-1 text-xs">Save 24%</span>
+              </div>
             </div>
             
             <div className="mt-8 flex-1 space-y-4">

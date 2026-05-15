@@ -47,13 +47,13 @@ function PaymentPage() {
                     <p className="font-bold text-foreground">Premium Guard</p>
                     <p className="text-sm text-muted-foreground">Monthly Subscription</p>
                   </div>
-                  <p className="font-bold">₹199</p>
+                  <p className="font-bold">₹99</p>
                 </div>
               </div>
 
               <div className="mt-6 flex justify-between items-center font-display text-2xl font-black">
                 <p>Total</p>
-                <p>₹199</p>
+                <p>₹99</p>
               </div>
             </div>
 
