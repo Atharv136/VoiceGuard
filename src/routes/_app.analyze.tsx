@@ -66,17 +66,17 @@ function Analyze() {
   }
 
   const riskColor = (level: string) =>
-    level === "Dangerous" ? "text-safe border-safe/30 bg-safe/10" :
+    level === "Safe" ? "text-safe border-safe/30 bg-safe/10" :
       level === "Suspicious" ? "text-warning-foreground border-warning/30 bg-warning/10" :
         "text-danger border-danger/30 bg-danger/10";
 
   const riskIcon = (level: string) =>
-    level === "Dangerous" ? <CheckCircle className="h-6 w-6" /> :
-      level === "Suspicious" ? <AlertOctagon className="h-6 w-6" /> :
-        <AlertTriangle className="h-6 w-6" />;
+    level === "Safe" ? <CheckCircle className="h-6 w-6" /> :
+      level === "Suspicious" ? <AlertTriangle className="h-6 w-6" /> :
+        <AlertOctagon className="h-6 w-6" />;
 
   const riskLabel = (level: string) =>
-    level === "Dangerous" ? "SAFE — No scam indicators found" :
+    level === "Safe" ? "SAFE — No scam indicators found" :
       level === "Suspicious" ? "SUSPICIOUS — Some warning signs detected" :
         "HIGH RISK — This call is likely a scam";
 
@@ -150,7 +150,7 @@ function Analyze() {
               label="Voice authenticity (Aurigin)"
               value={result.auriginScore}
               helper="How likely the voice is genuine/human (Higher = Lower Risk)"
-              tone={result.auriginScore >= 70 ? "danger" : result.auriginScore >= 40 ? "primary" : "safe"}
+              tone={result.auriginScore <= 50 ? "safe" : result.auriginScore <= 80 ? "primary" : "danger"}
             />
             <ScoreBar
               label="Scam language score"
@@ -165,8 +165,8 @@ function Analyze() {
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">Aurigin AI Deepfake Detection</h2>
               <span className={`rounded-full px-3 py-1 text-xs font-bold ${result.auriginVerdict === "bonafide" ? "bg-safe/20 text-safe" :
-                  result.auriginVerdict === "spoofed" ? "bg-danger/20 text-danger" :
-                    "bg-warning/20 text-warning-foreground"
+                result.auriginVerdict === "spoofed" ? "bg-danger/20 text-danger" :
+                  "bg-warning/20 text-warning-foreground"
                 }`}>
                 {result.auriginVerdict === "bonafide" ? "BONAFIDE" :
                   result.auriginVerdict === "spoofed" ? "SPOOFED" :

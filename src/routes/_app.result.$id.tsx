@@ -75,7 +75,7 @@ function Result() {
             label="Voice authenticity (Aurigin)" 
             value={record.aurigin_score} 
             helper="How likely the voice is genuine/human (Higher = Lower Risk)" 
-            tone={record.aurigin_score >= 70 ? "danger" : record.aurigin_score >= 40 ? "primary" : "safe"} 
+            tone={record.aurigin_score <= 50 ? "danger" : record.aurigin_score <= 80 ? "primary" : "safe"} 
           />
           <ScoreBar 
             label="Scam language score" 
