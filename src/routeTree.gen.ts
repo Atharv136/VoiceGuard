@@ -11,8 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SafetyCheckRouteImport } from './routes/safety-check'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PhrasesRouteImport } from './routes/phrases'
 import { Route as PhoneCheckRouteImport } from './routes/phone-check'
+import { Route as PaymentRouteImport } from './routes/payment'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LiveRouteImport } from './routes/live'
 import { Route as AwarenessRouteImport } from './routes/awareness'
@@ -36,6 +38,11 @@ const SafetyCheckRoute = SafetyCheckRouteImport.update({
   path: '/safety-check',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PhrasesRoute = PhrasesRouteImport.update({
   id: '/phrases',
   path: '/phrases',
@@ -44,6 +51,11 @@ const PhrasesRoute = PhrasesRouteImport.update({
 const PhoneCheckRoute = PhoneCheckRouteImport.update({
   id: '/phone-check',
   path: '/phone-check',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentRoute = PaymentRouteImport.update({
+  id: '/payment',
+  path: '/payment',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -111,8 +123,10 @@ export interface FileRoutesByFullPath {
   '/awareness': typeof AwarenessRoute
   '/live': typeof LiveRoute
   '/login': typeof LoginRoute
+  '/payment': typeof PaymentRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
+  '/pricing': typeof PricingRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/analyze': typeof AppAnalyzeRoute
@@ -128,8 +142,10 @@ export interface FileRoutesByTo {
   '/awareness': typeof AwarenessRoute
   '/live': typeof LiveRoute
   '/login': typeof LoginRoute
+  '/payment': typeof PaymentRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
+  '/pricing': typeof PricingRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/analyze': typeof AppAnalyzeRoute
@@ -147,8 +163,10 @@ export interface FileRoutesById {
   '/awareness': typeof AwarenessRoute
   '/live': typeof LiveRoute
   '/login': typeof LoginRoute
+  '/payment': typeof PaymentRoute
   '/phone-check': typeof PhoneCheckRoute
   '/phrases': typeof PhrasesRoute
+  '/pricing': typeof PricingRoute
   '/safety-check': typeof SafetyCheckRoute
   '/signup': typeof SignupRoute
   '/_app/analyze': typeof AppAnalyzeRoute
@@ -166,8 +184,10 @@ export interface FileRouteTypes {
     | '/awareness'
     | '/live'
     | '/login'
+    | '/payment'
     | '/phone-check'
     | '/phrases'
+    | '/pricing'
     | '/safety-check'
     | '/signup'
     | '/analyze'
@@ -183,8 +203,10 @@ export interface FileRouteTypes {
     | '/awareness'
     | '/live'
     | '/login'
+    | '/payment'
     | '/phone-check'
     | '/phrases'
+    | '/pricing'
     | '/safety-check'
     | '/signup'
     | '/analyze'
@@ -201,8 +223,10 @@ export interface FileRouteTypes {
     | '/awareness'
     | '/live'
     | '/login'
+    | '/payment'
     | '/phone-check'
     | '/phrases'
+    | '/pricing'
     | '/safety-check'
     | '/signup'
     | '/_app/analyze'
@@ -220,8 +244,10 @@ export interface RootRouteChildren {
   AwarenessRoute: typeof AwarenessRoute
   LiveRoute: typeof LiveRoute
   LoginRoute: typeof LoginRoute
+  PaymentRoute: typeof PaymentRoute
   PhoneCheckRoute: typeof PhoneCheckRoute
   PhrasesRoute: typeof PhrasesRoute
+  PricingRoute: typeof PricingRoute
   SafetyCheckRoute: typeof SafetyCheckRoute
   SignupRoute: typeof SignupRoute
 }
@@ -242,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SafetyCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/phrases': {
       id: '/phrases'
       path: '/phrases'
@@ -254,6 +287,13 @@ declare module '@tanstack/react-router' {
       path: '/phone-check'
       fullPath: '/phone-check'
       preLoaderRoute: typeof PhoneCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payment': {
+      id: '/payment'
+      path: '/payment'
+      fullPath: '/payment'
+      preLoaderRoute: typeof PaymentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -371,8 +411,10 @@ const rootRouteChildren: RootRouteChildren = {
   AwarenessRoute: AwarenessRoute,
   LiveRoute: LiveRoute,
   LoginRoute: LoginRoute,
+  PaymentRoute: PaymentRoute,
   PhoneCheckRoute: PhoneCheckRoute,
   PhrasesRoute: PhrasesRoute,
+  PricingRoute: PricingRoute,
   SafetyCheckRoute: SafetyCheckRoute,
   SignupRoute: SignupRoute,
 }

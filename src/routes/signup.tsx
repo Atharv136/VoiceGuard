@@ -68,7 +68,7 @@ function Signup() {
       login(data.user, data.accessToken);
       setOnboardingDone(false);
       toast.success("Account created. Welcome to VoiceGuard.");
-      navigate({ to: "/dashboard" });
+      navigate({ to: "/pricing" as any });
     } catch (err) {
       toast.error((err as Error).message || "Failed to create account");
     } finally {
