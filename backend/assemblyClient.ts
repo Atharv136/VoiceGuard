@@ -34,7 +34,7 @@ async function uploadAudio(
       "authorization": apiKey,
       "Content-Type": "application/octet-stream",
     },
-    body: audioBuffer,
+    body: audioBuffer as unknown as BodyInit,
   });
 
   if (!response.ok) {
