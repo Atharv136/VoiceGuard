@@ -86,7 +86,7 @@ export async function analyzeAudio(
       "Content-Type": `multipart/form-data; boundary=${boundary}`,
       "Content-Length": String(body.length),
     },
-    body,
+    body: body as unknown as BodyInit,
   });
 
   const responseBody = await response.text();
